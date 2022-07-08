@@ -1,67 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-</head>
-<body>
+  <head> </head>
+  <body>
     <div id="root"></div>
-</body>
-<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script type="text/babel">
-    function MinutesToHours() {
-        const [amount, setAmount] = React.useState(0);
-        const [inverted, setInverted] = React.useState(false);
-        const onChange = (event) => {
-            setAmount(event.target.value);
-        };
-        const reset = () => setAmount(0);
-        const onInvert = () => {
-            reset();
-            setInverted((current) => !current);
-        };
-        return(
-            <div>
-                <div>
-                    <label htmlFor="minutes">Minutes</label>
-                    <input id="minutes" value={inverted ? Math.round(amount * 60) : amount} placeholder="Minutes" type="number" onChange={onChange} disabled = {inverted} />
-                </div>
-                <div>
-                    <label htmlFor="hours">hours</label>
-                    <input id="hours" value={inverted ? amount : Math.round(amount / 60)} placeholder="hours" type="number" onChange={onChange} disabled = {!inverted} />
-                </div>
-                <button onClick={reset}>reset</button>
-                <button onClick={onInvert}>{inverted ? "Turn Back" : "Invert"}</button>
-            </div>
-        )
-    }
-    function KmToMiles() {
-        return <h3>KM 2 M</h3>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // 두번째 인자는 없음. 첫번쨰 인자가 유일하게 받는 인자. 해당 인자(object)로 모든 속성이 들어간다.
+    // shortcut of props: props.text, props.big ==> text, big
+    function Btn({ text, big }) {
+      return (
+        <button
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            fontSize: big ? 18 : 16,
+          }}
+        >
+          {text}
+        </button>
+      );
     }
     function App() {
-        const [index, setIndex] = React.useState("xx");
-        const onSelect = (event) => {
-            setIndex(event.target.value);
-        };
-        console.log("render w/", index);
-        return(
-            <div>
-                <h1 className="hi">Super Converter</h1>
-                <select value={index} onChange={onSelect}>
-                    <option value="xx">Select units</option>
-                    <option value="0">Minutes & Hours</option>
-                    <option value="1">Km & Miles</option>
-                </select>
-                <hr />
-                {/*{}를 사용하여 JS 문법 적용*/}
-                {index === "xx" ? "Please select your units" : null}
-                {index === "0" ? <MinutesToHours /> : null}
-                {index === "1" ? <KmToMiles /> : null}
-            </div>
-        )
+      return (
+        <div>
+          {/*component의 모든 property를 function 의 첫번째 인자(argument: object)로 넣는다: props == parent component에서 child component로의 데이터 전달*/}
+          <Btn text="Save Changes" big={true} />
+          <Btn text="Continue" big={false} />
+        </div>
+      );
     }
     const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
-
-</script>
+  </script>
 </html>
