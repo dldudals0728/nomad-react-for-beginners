@@ -4,41 +4,37 @@
   <body>
     <div id="root"></div>
   </body>
-  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    // 두번째 인자는 없음. 첫번쨰 인자가 유일하게 받는 인자. 해당 인자(object)로 모든 속성이 들어간다.
-    // shortcut of props: props.text, props.big ==> text, big
-    function Btn({ text, onClick }) {
-      console.log(text, "was rerenderd");
+    function Btn({ text, fontSize = 12 }) {
       return (
         <button
-          onClick={onClick}
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
+            fontSize,
           }}
         >
           {text}
         </button>
       );
     }
-    // 부모의 상태가 변경됨(Btn의 changeValue로 인해)에 따라 부모가 rerendering되고, 그러면 값이 변경되지 않은 두번째 버튼까지 rerendering 된다.
-    // 이러한 비효율을 막기 위해 React에서 제공하는 .memo()가 있다. 부모의 상태 변경이 일어나더라도, props가 변경된 자식 컴포넌트만 변경되도록 한다.
-    const MemorizedBtn = React.memo(Btn);
+    // propTypes에 의한 정의는, react가 development용으로 되어 있어야 정상적으로 작동한다. 배포용인 production.min으로 되어있으면 작동하지 않는다.
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    };
     function App() {
-      const [value, setValue] = React.useState("Save Changes");
-      const changeValue = () => setValue("Revert Change");
       return (
         <div>
-          {/*component의 모든 property를 function 의 첫번째 인자(argument: object)로 넣는다: props == parent component에서 child component로의 데이터 전달*/}
-          {/*custom component에 추가되는 모든 것은 property이지, style을 적용하거나, onClick을 통해 event listener를 추가할 수 없다. 해당 component에서 적용시켜 주어야 한다.*/}
-          <MemorizedBtn text={value} onClick={changeValue} />
-          <MemorizedBtn text="Continue" />
+          <Btn text="Save Change" fontSize={18} />
+          <Btn text={"continue"} />
         </div>
       );
     }
