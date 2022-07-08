@@ -10,28 +10,35 @@
   <script type="text/babel">
     // 두번째 인자는 없음. 첫번쨰 인자가 유일하게 받는 인자. 해당 인자(object)로 모든 속성이 들어간다.
     // shortcut of props: props.text, props.big ==> text, big
-    function Btn({ text, big }) {
+    function Btn({ text, onClick }) {
+      console.log(text, "was rerenderd");
       return (
         <button
+          onClick={onClick}
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
-            fontSize: big ? 18 : 16,
           }}
         >
           {text}
         </button>
       );
     }
+    // 부모의 상태가 변경됨(Btn의 changeValue로 인해)에 따라 부모가 rerendering되고, 그러면 값이 변경되지 않은 두번째 버튼까지 rerendering 된다.
+    // 이러한 비효율을 막기 위해 React에서 제공하는 .memo()가 있다. 부모의 상태 변경이 일어나더라도, props가 변경된 자식 컴포넌트만 변경되도록 한다.
+    const MemorizedBtn = React.memo(Btn);
     function App() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Change");
       return (
         <div>
           {/*component의 모든 property를 function 의 첫번째 인자(argument: object)로 넣는다: props == parent component에서 child component로의 데이터 전달*/}
-          <Btn text="Save Changes" big={true} />
-          <Btn text="Continue" big={false} />
+          {/*custom component에 추가되는 모든 것은 property이지, style을 적용하거나, onClick을 통해 event listener를 추가할 수 없다. 해당 component에서 적용시켜 주어야 한다.*/}
+          <MemorizedBtn text={value} onClick={changeValue} />
+          <MemorizedBtn text="Continue" />
         </div>
       );
     }
