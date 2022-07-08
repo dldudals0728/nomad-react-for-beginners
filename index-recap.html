@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div id="root"></div>
+</body>
+<!--crbug/1173575 non-js module files deprecated => 크롬 껐다 키기-->
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script>
+    const root = document.getElementById("root");
+    const h3 = React.createElement("h3", {
+        onMouseEnter: () => console.log("Im title")
+    }, "Hello I'm span");
+    const btn = React.createElement("button", {
+        onClick: () => console.log("Im clicked"),
+        style: {backgroundColor: "tomato"}
+    }, "Click me!");
+    const container = React.createElement("div", null, [h3, btn])
+    // ReactDOM.render(놓을 element, dst)
+    ReactDOM.render(container, root);
+</script>
+</html>
