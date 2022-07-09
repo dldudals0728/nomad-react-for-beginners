@@ -21,3 +21,7 @@ https://nodejs.org/ko/
 
 * create react app을 사용하면, auto-reload 기능을 제공해주는데, 이 기능은 파일을 수정하고 저장하면 자동으로 서버가 새로고침 되는 기능이다. super cool! *
 7) 실습을 위해 CSS, test 파일 등 파일을 삭제 및 수정해준다.
+
+7-1) 실습을 위한 수정사항
+M index.js / App.js
+D App.test.js / reportWebVitals.js / setupTests.js / App.css / index.css / logo.svg
