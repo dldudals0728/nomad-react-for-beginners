@@ -1,33 +1,22 @@
 import { useState, useEffect } from "react";
+function Hello() {
+  // cleanup function: useEffect의 첫번째 인자로 전달되는 함수의 return값으로 함수가 들어가면, component가 destroy될 때 return되는 함수가 실행되도록 할 수 있다.
+  // cleanup function이 자주 사용되지는 않는다. but, 알아놓으면 좋지 !
+  useEffect(() => {
+    console.log("created :)");
+    return () => console.log("bye :(");
+  }, []);
+  return <h1>Hello</h1>;
+}
 
 function App() {
-  const [counter, setValue] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const onClick = () => setValue((prev) => prev + 1);
-  const onChange = (event) => setKeyword(event.target.value);
-  useEffect(() => {
-    console.log("I run only once.");
-  }, []);
-  // useEffect()의 두번째 인자로 들어가는 배열의 요소를 observe한다. 해당 요소의 변화가 있을 때 첫번째 인자의 함수를 실행시킨다.
-  useEffect(() => {
-    console.log("I run when 'keyword' changes.");
-  }, [keyword]);
-  useEffect(() => {
-    console.log("I run when 'counter' changes.");
-  }, [counter]);
-  useEffect(() => {
-    console.log("I run when 'keyword' or 'counter' changes");
-  }, [keyword, counter]);
+  const [showing, setShowing] = useState(false);
+  const onClick = () => setShowing((prev) => !prev);
   return (
     <div>
-      <input
-        value={keyword}
-        onChange={onChange}
-        type="text"
-        placeholder="Search here..."
-      />
-      <h1>{counter}</h1>
-      <button onClick={onClick}>click me</button>
+      {/* javascript로 아래와 같이 작업할 경우, component를 destroy한다. */}
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? "hide" : "show"}</button>
     </div>
   );
 }
