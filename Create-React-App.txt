@@ -14,7 +14,7 @@ https://nodejs.org/ko/
 
 4) 해당 디렉토리에서 프로젝트 폴더가 생성된 것을 확인한다.
 
-* 여기서부턴 nomardcoders "ReactJS로 영화 웹 서비스 만들기" 강의의 설정을 따른다.
+* 여기서부턴 nomadcoders "ReactJS로 영화 웹 서비스 만들기" 강의의 설정을 따른다.
 5) yarn.lock 파일이 존재한다면 삭제.(파일이 없을 수 있음)
 6) project 폴더로 이동 후, npm start 명령어를 통해 develop server를 열 수 있다.
     * 6번 과정에서 npm이 정의되어 있지 않다는 오류가 발생하면 vscode를 종료하고 다시 실행할 것! *
