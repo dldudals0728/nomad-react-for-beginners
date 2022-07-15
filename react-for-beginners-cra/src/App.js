@@ -1,22 +1,41 @@
-import { useState, useEffect } from "react";
-function Hello() {
-  // cleanup function: useEffect의 첫번째 인자로 전달되는 함수의 return값으로 함수가 들어가면, component가 destroy될 때 return되는 함수가 실행되도록 할 수 있다.
-  // cleanup function이 자주 사용되지는 않는다. but, 알아놓으면 좋지 !
-  useEffect(() => {
-    console.log("created :)");
-    return () => console.log("bye :(");
-  }, []);
-  return <h1>Hello</h1>;
-}
+import { useEffect, useState } from "react";
 
 function App() {
-  const [showing, setShowing] = useState(false);
-  const onClick = () => setShowing((prev) => !prev);
+  const [toDo, setToDo] = useState("");
+  const [toDos, setToDos] = useState([]);
+  const onChange = (event) => setToDo(event.target.value);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (toDo === "") {
+      return;
+    }
+    // ...arr => arr의 모든 요소들을 return
+    setToDos((currentArray) => [toDo, ...currentArray]);
+    setToDo("");
+  };
+  useEffect(() => {
+    console.log(toDos);
+  }, [toDos]);
   return (
     <div>
-      {/* javascript로 아래와 같이 작업할 경우, component를 destroy한다. */}
-      {showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing ? "hide" : "show"}</button>
+      <h1>My To Dos({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          value={toDo}
+          type="text"
+          placeholder="write for to do..."
+        />
+        <button>Add To Do</button>
+      </form>
+      <hr />
+      <ul>
+        {/* arr.map(f) => arr의 각 요소에 첫번째 인자로 들어가는 함수를 적용한다. 햄수의 첫번째 인자는 각 요소를 가리킬 수 있다. */}
+        {/** ex) ['one', 'two', 'three'].map((item) => item.toUpperCase()) ==> ['ONE', 'TWO', 'THREE'] */}
+        {toDos.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }
