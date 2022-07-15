@@ -1,41 +1,32 @@
 import { useEffect, useState } from "react";
-
+// api: api.coinpaprika.com/v1/tickers
 function App() {
-  const [toDo, setToDo] = useState("");
-  const [toDos, setToDos] = useState([]);
-  const onChange = (event) => setToDo(event.target.value);
-  const onSubmit = (event) => {
-    event.preventDefault();
-    if (toDo === "") {
-      return;
-    }
-    // ...arr => arr의 모든 요소들을 return
-    setToDos((currentArray) => [toDo, ...currentArray]);
-    setToDo("");
-  };
+  const [loading, setLoading] = useState(true);
+  const [coins, setCoins] = useState([]);
   useEffect(() => {
-    console.log(toDos);
-  }, [toDos]);
+    // fetch: JS. json 파일을 가져온다??
+    // console -> network 에서 request하는 것을 볼 수 있음(ticker)
+    fetch("https://api.coinpaprika.com/v1/tickers") // [Unexpected token < in JSON at position 0] 에러: https:// 명시 혹은 application/json 명시를 통해 해결 가능
+      .then((response) => response.json()) // response를 받아서 json으로 변환시켜 주고
+      .then((json) => {
+        setCoins(json);
+        setLoading(false);
+      }); // json을 받아서 coins에 입력.
+  }, []);
   return (
     <div>
-      <h1>My To Dos({toDos.length})</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          onChange={onChange}
-          value={toDo}
-          type="text"
-          placeholder="write for to do..."
-        />
-        <button>Add To Do</button>
-      </form>
-      <hr />
-      <ul>
-        {/* arr.map(f) => arr의 각 요소에 첫번째 인자로 들어가는 함수를 적용한다. 햄수의 첫번째 인자는 각 요소를 가리킬 수 있다. */}
-        {/** ex) ['one', 'two', 'three'].map((item) => item.toUpperCase()) ==> ['ONE', 'TWO', 'THREE'] */}
-        {toDos.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+      {loading ? (
+        <strong>Loading...</strong>
+      ) : (
+        <select>
+          {coins.map((coin) => (
+            <option>
+              {coin.name} ({coin.symbol}): ${coin.quotes.USD.price} USD
+            </option>
+          ))}
+        </select>
+      )}
     </div>
   );
 }
