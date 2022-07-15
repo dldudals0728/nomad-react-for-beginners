@@ -1,6 +1,7 @@
 // url에서 변경되는 부분(like :id)의 값을 object 형태로 반환해주는 함수
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styles from "./Home.module.css";
 
 function Detail() {
   // const x = useParams();
@@ -23,7 +24,9 @@ function Detail() {
   return (
     <div>
       {loading ? (
-        <strong>Loading...</strong>
+        <div className={styles.loader}>
+          <span>Loading...</span>
+        </div>
       ) : (
         <div>
           <h1>Detail</h1>
